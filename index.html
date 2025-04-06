@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Karan Aujla - Concert Ticket Booking Portal</title>
-    <style>
-        /* ============================================================
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Karan Aujla - Concert Ticket Booking Portal</title>
+  <style>
+    /* ============================================================
        COLOR PALETTE & CSS VARIABLES:
          Primary Dark:       #352208
          Light/Background:   #e1bb80
@@ -14,933 +13,879 @@
          Secondary:          #685634
          Highlight:          #806443
     ============================================================ */
-        :root {
-            --color-dark: #352208;
-            --color-light: #e1bb80;
-            --color-accent: #7b6b43;
-            --color-secondary: #685634;
-            --color-highlight: #806443;
-        }
-
-        /* ============================================================
+    :root {
+      --color-dark: #352208;
+      --color-light: #e1bb80;
+      --color-accent: #7b6b43;
+      --color-secondary: #685634;
+      --color-highlight: #806443;
+    }
+    
+    /* ============================================================
        RESET & GLOBAL STYLES
     ============================================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: var(--color-light);
-            color: var(--color-dark);
-            line-height: 1.6;
-            position: relative;
-        }
-
-        a {
-            text-decoration: none;
-            color: var(--color-dark);
-        }
-
-        /* ============================================================
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--color-light);
+      color: var(--color-dark);
+      line-height: 1.6;
+      position: relative;
+    }
+    a {
+      text-decoration: none;
+      color: var(--color-dark);
+    }
+    
+    /* ============================================================
        VIDEO BACKGROUND STYLES
     ============================================================ */
-        .video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
-        }
-
-        .video-foreground {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100vw;
-            height: 56.25vw;
-            /* 16:9 ratio */
-            min-height: 100vh;
-        }
-
-        .video-foreground iframe {
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        /* ============================================================
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+    }
+    .video-foreground {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 56.25vw; /* 16:9 ratio */
+      min-height: 100vh;
+    }
+    .video-foreground iframe {
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    
+    /* ============================================================
        UNMUTE BUTTON (User Triggered)
     ============================================================ */
-        .unmute-btn-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 2;
-        }
-
-        .unmute-btn-container button {
-            background-color: var(--color-accent);
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1em;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .unmute-btn-container button:hover {
-            background-color: var(--color-highlight);
-        }
-
-        /* ============================================================
+    .unmute-btn-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 2;
+    }
+    .unmute-btn-container button {
+      background-color: var(--color-accent);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .unmute-btn-container button:hover {
+      background-color: var(--color-highlight);
+    }
+    
+    /* ============================================================
        ANIMATION KEYFRAMES
     ============================================================ */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.05);
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-        /* ============================================================
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    /* ============================================================
        HEADER SECTION
     ============================================================ */
-        header {
-            background: linear-gradient(90deg, var(--color-dark), var(--color-secondary));
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #fff;
-            position: relative;
-            z-index: 1;
-            animation: fadeIn 1.5s ease forwards;
-        }
-
-        header .logo {
-            font-size: 2em;
-            font-weight: bold;
-        }
-
-        header nav ul {
-            list-style: none;
-            display: flex;
-            gap: 25px;
-        }
-
-        header nav ul li a {
-            color: #fff;
-            font-size: 1.1em;
-            transition: color 0.3s ease;
-        }
-
-        header nav ul li a:hover {
-            color: var(--color-highlight);
-        }
-
-        /* ============================================================
+    header {
+      background: linear-gradient(90deg, var(--color-dark), var(--color-secondary));
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 1.5s ease forwards;
+    }
+    header .logo {
+      font-size: 2em;
+      font-weight: bold;
+    }
+    header nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+    header nav ul li a {
+      color: #fff;
+      font-size: 1.1em;
+      transition: color 0.3s ease;
+    }
+    header nav ul li a:hover {
+      color: var(--color-highlight);
+    }
+    
+    /* ============================================================
        HERO SECTION (Call-to-Action)
     ============================================================ */
-        .hero {
-            text-align: center;
-            padding: 150px 20px;
-            background-color: rgba(0, 0, 0, 0.4);
-            /* dark overlay for readability */
-            color: #fff;
-            position: relative;
-            z-index: 1;
-            animation: fadeIn 2s ease forwards;
-        }
-
-        .hero h1 {
-            font-size: 3.8em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 2.5s ease forwards;
-        }
-
-        .hero p {
-            font-size: 1.6em;
-            margin-bottom: 30px;
-            animation: fadeIn 2.5s ease forwards;
-            animation-delay: 0.5s;
-        }
-
-        .hero button {
-            background-color: var(--color-accent);
-            color: #fff;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2em;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .hero button:hover {
-            background-color: var(--color-highlight);
-            animation: pulse 1s infinite;
-        }
-
-        /* ============================================================
+    .hero {
+      text-align: center;
+      padding: 150px 20px;
+      background-color: rgba(0, 0, 0, 0.4); /* dark overlay for readability */
+      color: #fff;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 2s ease forwards;
+    }
+    .hero h1 {
+      font-size: 3.8em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+      animation: fadeIn 2.5s ease forwards;
+    }
+    .hero p {
+      font-size: 1.6em;
+      margin-bottom: 30px;
+      animation: fadeIn 2.5s ease forwards;
+      animation-delay: 0.5s;
+    }
+    .hero button {
+      background-color: var(--color-accent);
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .hero button:hover {
+      background-color: var(--color-highlight);
+      animation: pulse 1s infinite;
+    }
+    
+    /* ============================================================
        FEATURED CONCERTS SECTION
     ============================================================ */
-        #concerts {
-            padding: 50px 20px;
-            background-color: var(--color-light);
-            animation: fadeIn 1.8s ease forwards;
-            position: relative;
-            z-index: 1;
-        }
-
-        #concerts h2 {
-            text-align: center;
-            font-size: 2.8em;
-            margin-bottom: 40px;
-            color: var(--color-dark);
-        }
-
-        .concert-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-        }
-
-        /* Only one concert card now – for Karan Aujla */
-        .concert-card {
-            background-color: #fff;
-            border: 2px solid var(--color-accent);
-            border-radius: 10px;
-            width: 300px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeIn 1.5s ease forwards;
-        }
-
-        .concert-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
-        }
-
-        .concert-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .concert-card .card-content {
-            padding: 20px;
-        }
-
-        .concert-card .card-content h3 {
-            font-size: 1.8em;
-            margin-bottom: 10px;
-            color: var(--color-dark);
-        }
-
-        .concert-card .card-content p {
-            margin-bottom: 10px;
-            color: var(--color-secondary);
-        }
-
-        .concert-card .card-content h4 {
-            margin: 15px 0 10px;
-            font-size: 1.3em;
-            color: var(--color-accent);
-        }
-
-        .concert-card .card-content ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .concert-card .card-content ul li {
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-            color: var(--color-secondary);
-        }
-
-        /* No song thumbnail images added in this version */
-        .concert-card .card-content ul li::before {
-            content: "♪";
-            margin-right: 8px;
-            color: var(--color-accent);
-        }
-
-        .concert-card .card-content button {
-            background-color: var(--color-dark);
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .concert-card .card-content button:hover {
-            background-color: var(--color-highlight);
-            animation: pulse 1s ease;
-        }
-
-        /* ============================================================
+    #concerts {
+      padding: 50px 20px;
+      background-color: var(--color-light);
+      animation: fadeIn 1.8s ease forwards;
+      position: relative;
+      z-index: 1;
+    }
+    #concerts h2 {
+      text-align: center;
+      font-size: 2.8em;
+      margin-bottom: 40px;
+      color: var(--color-dark);
+    }
+    .concert-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+    }
+    /* Only one concert card now – for Karan Aujla */
+    .concert-card {
+      background-color: #fff;
+      border: 2px solid var(--color-accent);
+      border-radius: 10px;
+      width: 300px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeIn 1.5s ease forwards;
+    }
+    .concert-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+    }
+    .concert-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .concert-card .card-content {
+      padding: 20px;
+    }
+    .concert-card .card-content h3 {
+      font-size: 1.8em;
+      margin-bottom: 10px;
+      color: var(--color-dark);
+    }
+    .concert-card .card-content p {
+      margin-bottom: 10px;
+      color: var(--color-secondary);
+    }
+    .concert-card .card-content h4 {
+      margin: 15px 0 10px;
+      font-size: 1.3em;
+      color: var(--color-accent);
+    }
+    .concert-card .card-content ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .concert-card .card-content ul li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      color: var(--color-secondary);
+    }
+    /* No song thumbnail images added in this version */
+    .concert-card .card-content ul li::before {
+      content: "♪";
+      margin-right: 8px;
+      color: var(--color-accent);
+    }
+    .concert-card .card-content button {
+      background-color: var(--color-dark);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .concert-card .card-content button:hover {
+      background-color: var(--color-highlight);
+      animation: pulse 1s ease;
+    }
+    
+    /* ============================================================
        PRICING SECTION
     ============================================================ */
-        #pricing {
-            padding: 50px 20px;
-            background-color: #fff;
-            animation: fadeIn 1.8s ease forwards;
-            position: relative;
-            z-index: 1;
-        }
-
-        #pricing h2 {
-            text-align: center;
-            font-size: 2.8em;
-            margin-bottom: 40px;
-            color: var(--color-dark);
-        }
-
-        .pricing-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .pricing-card {
-            background-color: #fff;
-            border: 2px solid var(--color-accent);
-            border-radius: 10px;
-            width: 280px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeIn 1.5s ease forwards;
-            text-align: center;
-            padding-bottom: 20px;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
-        }
-
-        .pricing-header {
-            background-color: var(--color-dark);
-            color: #fff;
-            padding: 15px 0;
-        }
-
-        .pricing-header h3 {
-            margin: 0;
-            font-size: 1.8em;
-        }
-
-        .price {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: var(--color-dark);
-            margin: 20px 0;
-        }
-
-        .pricing-features {
-            list-style: none;
-            padding: 0 20px;
-            margin-bottom: 25px;
-        }
-
-        .pricing-features li {
-            margin-bottom: 10px;
-            color: var(--color-secondary);
-        }
-
-        .pricing-card button {
-            background-color: var(--color-accent);
-            color: #fff;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            font-size: 1.1em;
-        }
-
-        .pricing-card button:hover {
-            background-color: var(--color-highlight);
-            animation: pulse 1s ease;
-        }
-
-        /* ============================================================
+    #pricing {
+      padding: 50px 20px;
+      background-color: #fff;
+      animation: fadeIn 1.8s ease forwards;
+      position: relative;
+      z-index: 1;
+    }
+    #pricing h2 {
+      text-align: center;
+      font-size: 2.8em;
+      margin-bottom: 40px;
+      color: var(--color-dark);
+    }
+    .pricing-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    .pricing-card {
+      background-color: #fff;
+      border: 2px solid var(--color-accent);
+      border-radius: 10px;
+      width: 280px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeIn 1.5s ease forwards;
+      text-align: center;
+      padding-bottom: 20px;
+    }
+    .pricing-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+    }
+    .pricing-header {
+      background-color: var(--color-dark);
+      color: #fff;
+      padding: 15px 0;
+    }
+    .pricing-header h3 {
+      margin: 0;
+      font-size: 1.8em;
+    }
+    .price {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: var(--color-dark);
+      margin: 20px 0;
+    }
+    .pricing-features {
+      list-style: none;
+      padding: 0 20px;
+      margin-bottom: 25px;
+    }
+    .pricing-features li {
+      margin-bottom: 10px;
+      color: var(--color-secondary);
+    }
+    .pricing-card button {
+      background-color: var(--color-accent);
+      color: #fff;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 1.1em;
+    }
+    .pricing-card button:hover {
+      background-color: var(--color-highlight);
+      animation: pulse 1s ease;
+    }
+    
+    /* ============================================================
        BOOKING FORM SECTION
     ============================================================ */
-        #booking {
-            padding: 50px 20px;
-            background-color: var(--color-light);
-            animation: fadeIn 1.5s ease forwards;
-            position: relative;
-            z-index: 1;
-        }
-
-        #booking h2 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.8em;
-            color: var(--color-dark);
-        }
-
-        .booking-form {
-            max-width: 700px;
-            margin: auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .booking-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: var(--color-dark);
-        }
-
-        .booking-form input,
-        .booking-form textarea,
-        .booking-form select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--color-accent);
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 1em;
-            transition: border 0.3s ease;
-        }
-
-        .booking-form input:focus,
-        .booking-form textarea:focus,
-        .booking-form select:focus {
-            border-color: var(--color-secondary);
-        }
-
-        .booking-form button {
-            background-color: var(--color-dark);
-            color: #fff;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            font-size: 1.1em;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .booking-form button:hover {
-            background-color: var(--color-highlight);
-            animation: pulse 1s ease;
-        }
-
-        .response-message {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            display: none;
-        }
-
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        /* ============================================================
+    #booking {
+      padding: 50px 20px;
+      background-color: var(--color-light);
+      animation: fadeIn 1.5s ease forwards;
+      position: relative;
+      z-index: 1;
+    }
+    #booking h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.8em;
+      color: var(--color-dark);
+    }
+    .booking-form {
+      max-width: 700px;
+      margin: auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    .booking-form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: var(--color-dark);
+    }
+    .booking-form input,
+    .booking-form textarea,
+    .booking-form select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--color-accent);
+      border-radius: 5px;
+      margin-bottom: 20px;
+      font-size: 1em;
+      transition: border 0.3s ease;
+    }
+    .booking-form input:focus,
+    .booking-form textarea:focus,
+    .booking-form select:focus {
+      border-color: var(--color-secondary);
+    }
+    .booking-form button {
+      background-color: var(--color-dark);
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 1.1em;
+      display: block;
+      margin: 0 auto;
+    }
+    .booking-form button:hover {
+      background-color: var(--color-highlight);
+      animation: pulse 1s ease;
+    }
+    .response-message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      display: none;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    
+    /* ============================================================
        CONTACT SECTION
     ============================================================ */
-        #contact {
-            padding: 50px 20px;
-            background-color: #fff;
-            animation: fadeIn 1.5s ease forwards;
-            position: relative;
-            z-index: 1;
-        }
-
-        #contact h2 {
-            text-align: center;
-            font-size: 2.8em;
-            margin-bottom: 20px;
-            color: var(--color-dark);
-        }
-
-        .contact-wrapper {
-            max-width: 800px;
-            margin: auto;
-        }
-
-        .contact-info {
-            text-align: center;
-            margin-bottom: 40px;
-            color: var(--color-dark);
-        }
-
-        .contact-info p,
-        .contact-info address {
-            margin: 10px 0;
-        }
-
-        .contact-form {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .contact-form label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: var(--color-dark);
-        }
-
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--color-accent);
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 1em;
-            transition: border 0.3s ease;
-        }
-
-        .contact-form input:focus,
-        .contact-form textarea:focus {
-            border-color: var(--color-secondary);
-        }
-
-        .contact-form button {
-            background-color: var(--color-dark);
-            color: #fff;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            font-size: 1.1em;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .contact-form button:hover {
-            background-color: var(--color-highlight);
-            animation: pulse 1s ease;
-        }
-
-        /* ============================================================
+    #contact {
+      padding: 50px 20px;
+      background-color: #fff;
+      animation: fadeIn 1.5s ease forwards;
+      position: relative;
+      z-index: 1;
+    }
+    #contact h2 {
+      text-align: center;
+      font-size: 2.8em;
+      margin-bottom: 20px;
+      color: var(--color-dark);
+    }
+    .contact-wrapper {
+      max-width: 800px;
+      margin: auto;
+    }
+    .contact-info {
+      text-align: center;
+      margin-bottom: 40px;
+      color: var(--color-dark);
+    }
+    .contact-info p,
+    .contact-info address {
+      margin: 10px 0;
+    }
+    .contact-form {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    .contact-form label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: var(--color-dark);
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--color-accent);
+      border-radius: 5px;
+      margin-bottom: 20px;
+      font-size: 1em;
+      transition: border 0.3s ease;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--color-secondary);
+    }
+    .contact-form button {
+      background-color: var(--color-dark);
+      color: #fff;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 1.1em;
+      display: block;
+      margin: 0 auto;
+    }
+    .contact-form button:hover {
+      background-color: var(--color-highlight);
+      animation: pulse 1s ease;
+    }
+    
+    /* ============================================================
        FOOTER SECTION
     ============================================================ */
-        footer {
-            background: var(--color-dark);
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-            font-size: 0.9em;
-            animation: fadeIn 1.5s ease forwards;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ============================================================
+    footer {
+      background: var(--color-dark);
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      animation: fadeIn 1.5s ease forwards;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* ============================================================
        RESPONSIVE DESIGN
     ============================================================ */
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            header nav ul {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .concert-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .hero h1 {
-                font-size: 3em;
-            }
-
-            .pricing-container {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+      header nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .concert-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .hero h1 {
+        font-size: 3em;
+      }
+      .pricing-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <!-- =================== VIDEO BACKGROUND =================== -->
-    <div class="video-background">
-        <div class="video-foreground">
-            <iframe id="player" src="https://www.youtube.com/embed/XTp5jaRU3Ws?autoplay=1&controls=0&loop=1&playlist=XTp5jaRU3Ws&mute=1&modestbranding=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen>
-            </iframe>
-        </div>
+  <!-- =================== VIDEO BACKGROUND =================== -->
+  <div class="video-background">
+    <div class="video-foreground">
+      <iframe id="player" 
+              src="https://www.youtube.com/embed/XTp5jaRU3Ws?autoplay=1&controls=0&loop=1&playlist=XTp5jaRU3Ws&mute=1&modestbranding=1" 
+              frameborder="0" 
+              allow="autoplay; fullscreen" 
+              allowfullscreen>
+      </iframe>
     </div>
+  </div>
+  
+  <!-- =================== UNMUTE BUTTON =================== -->
+  <div class="unmute-btn-container">
+    <button id="unmute-btn">Unmute Music</button>
+  </div>
 
-    <!-- =================== UNMUTE BUTTON =================== -->
-    <div class="unmute-btn-container">
-        <button id="unmute-btn">Unmute Music</button>
+  <!-- =================== HEADER SECTION =================== -->
+  <header>
+    <div class="logo">Karan Aujla</div>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#concerts">Concerts</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#booking">Book Tickets</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="/admin">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- =================== HERO SECTION =================== -->
+  <section id="home" class="hero">
+    <h1>Karan Aujla Live in Concert</h1>
+    <p>Experience the electrifying performance of Punjab's hottest music sensation</p>
+    <button onclick="document.getElementById('booking').scrollIntoView()">Book Tickets Now</button>
+  </section>
+
+  <!-- =================== CONCERTS SECTION =================== -->
+  <section id="concerts">
+    <h2>Upcoming Concerts</h2>
+    <div class="concert-container">
+      <div class="concert-card">
+        <img src="https://via.placeholder.com/300x200.png?text=Karan+Aujla+Concert" alt="Karan Aujla Concert">
+        <div class="card-content">
+          <h3>World Tour 2025</h3>
+          <p>Date: December 15, 2025</p>
+          <p>Venue: Rogers Arena, Vancouver</p>
+          <p>Time: 7:00 PM</p>
+          <h4>Popular Tracks</h4>
+          <ul>
+            <li>52Bars</li>
+            <li>Players</li>
+            <li>Admiring You</li>
+            <li>Softly</li>
+            <li>Gangsta</li>
+          </ul>
+          <button onclick="document.getElementById('booking').scrollIntoView()">Book Now</button>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- =================== HEADER SECTION =================== -->
-    <header>
-        <div class="logo">Karan Aujla</div>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#concerts">Concerts</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="#booking">Book Tickets</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="/admin">Admin</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- =================== HERO SECTION =================== -->
-    <section id="home" class="hero">
-        <h1>Karan Aujla Live in Concert</h1>
-        <p>Experience the electrifying performance of Punjab's hottest music sensation</p>
-        <button onclick="document.getElementById('booking').scrollIntoView()">Book Tickets Now</button>
-    </section>
-
-    <!-- =================== CONCERTS SECTION =================== -->
-    <section id="concerts">
-        <h2>Upcoming Concerts</h2>
-        <div class="concert-container">
-            <div class="concert-card">
-
-                <div class="card-content">
-                    <h3>World Tour 2025</h3>
-                    <p>Date: December 15, 2025</p>
-                    <p>Venue: Rogers Arena, Vancouver</p>
-                    <p>Time: 7:00 PM</p>
-                    <h4>Popular Tracks</h4>
-                    <ul>
-                        <li>52Bars</li>
-                        <li>Players</li>
-                        <li>Admiring You</li>
-                        <li>Softly</li>
-                        <li>Gangsta</li>
-                    </ul>
-                    <button onclick="document.getElementById('booking').scrollIntoView()">Book Now</button>
-                </div>
-            </div>
+  <!-- =================== PRICING SECTION =================== -->
+  <section id="pricing">
+    <h2>Ticket Pricing</h2>
+    <div class="pricing-container">
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3>Basic</h3>
         </div>
-    </section>
-
-    <!-- =================== PRICING SECTION =================== -->
-    <section id="pricing">
-        <h2>Ticket Pricing</h2>
-        <div class="pricing-container">
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <h3>Basic</h3>
-                </div>
-                <div class="price">$100</div>
-                <ul class="pricing-features">
-                    <li>Standard Seating</li>
-                    <li>Access to Concessions</li>
-                    <li>Commemorative Ticket</li>
-                    <li>Concert Program</li>
-                </ul>
-                <button onclick="document.getElementById('booking').scrollIntoView(); document.getElementById('ticket-type').value='basic';">Select Basic</button>
-            </div>
-
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <h3>Fan Pit</h3>
-                </div>
-                <div class="price">$200</div>
-                <ul class="pricing-features">
-                    <li>Standing Area Near Stage</li>
-                    <li>Early Entry</li>
-                    <li>Exclusive Wristband</li>
-                    <li>Limited Edition Poster</li>
-                    <li>Access to Concessions</li>
-                </ul>
-                <button onclick="document.getElementById('booking').scrollIntoView(); document.getElementById('ticket-type').value='fanpit';">Select Fan Pit</button>
-            </div>
-
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <h3>VIP</h3>
-                </div>
-                <div class="price">$500</div>
-                <ul class="pricing-features">
-                    <li>Premium Seating</li>
-                    <li>Meet & Greet with Karan Aujla</li>
-                    <li>Photo Opportunity</li>
-                    <li>Autographed Merchandise</li>
-                    <li>VIP Lounge Access</li>
-                    <li>Exclusive VIP Gift Bag</li>
-                    <li>Priority Entry</li>
-                </ul>
-                <button onclick="document.getElementById('booking').scrollIntoView(); document.getElementById('ticket-type').value='vip';">Select VIP</button>
-            </div>
+        <div class="price">$100</div>
+        <ul class="pricing-features">
+          <li>Standard Seating</li>
+          <li>Access to Concessions</li>
+          <li>Commemorative Ticket</li>
+          <li>Concert Program</li>
+        </ul>
+        <button onclick="document.getElementById('booking').scrollIntoView(); document.getElementById('ticket-type').value='basic';">Select Basic</button>
+      </div>
+      
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3>Fan Pit</h3>
         </div>
-    </section>
-
-    <!-- =================== BOOKING SECTION =================== -->
-    <section id="booking">
-        <h2>Book Your Tickets</h2>
-        <div class="booking-form">
-            <form id="ticket-form">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
-
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" required>
-
-                <label for="concert">Select Concert</label>
-                <select id="concert" name="concert" required>
-                    <option value="">-- Select Concert --</option>
-                    <option value="vancouver">Vancouver - Dec 15, 2025</option>
-                    <option value="toronto">Toronto - Dec 20, 2025</option>
-                    <option value="montreal">Montreal - Dec 22, 2025</option>
-                </select>
-
-                <label for="ticket-type">Ticket Type</label>
-                <select id="ticket-type" name="ticket-type" required>
-                    <option value="">-- Select Ticket Type --</option>
-                    <option value="basic">Basic - $100</option>
-                    <option value="fanpit">Fan Pit - $200</option>
-                    <option value="vip">VIP - $500</option>
-                </select>
-
-                <label for="tickets">Number of Tickets</label>
-                <select id="tickets" name="tickets" required>
-                    <option value="">-- Select Quantity --</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-
-                <label for="message">Special Requests</label>
-                <textarea id="message" name="message" rows="4"></textarea>
-
-                <button type="submit">Reserve Tickets</button>
-            </form>
-            <div id="booking-response" class="response-message"></div>
+        <div class="price">$200</div>
+        <ul class="pricing-features">
+          <li>Standing Area Near Stage</li>
+          <li>Early Entry</li>
+          <li>Exclusive Wristband</li>
+          <li>Limited Edition Poster</li>
+          <li>Access to Concessions</li>
+        </ul>
+        <button onclick="document.getElementById('booking').scrollIntoView(); document.getElementById('ticket-type').value='fanpit';">Select Fan Pit</button>
+      </div>
+      
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3>VIP</h3>
         </div>
-    </section>
+        <div class="price">$500</div>
+        <ul class="pricing-features">
+          <li>Premium Seating</li>
+          <li>Meet & Greet with Karan Aujla</li>
+          <li>Photo Opportunity</li>
+          <li>Autographed Merchandise</li>
+          <li>VIP Lounge Access</li>
+          <li>Exclusive VIP Gift Bag</li>
+          <li>Priority Entry</li>
+        </ul>
+        <button onclick="document.getElementById('booking').scrollIntoView(); document.getElementById('ticket-type').value='vip';">Select VIP</button>
+      </div>
+    </div>
+  </section>
 
-    <!-- =================== CONTACT SECTION =================== -->
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <div class="contact-wrapper">
-            <div class="contact-info">
-                <p>For booking inquiries or general questions:</p>
-                <p>Email: info@karanaujlaconcerts.com</p>
-                <p>Phone: +91-9417273251</p>
-                <address>
-                    Karan Aujla Concerts<br>
-                    123 Music Lane<br>
-                    Vancouver, BC V6B 4Y8
-                </address>
-            </div>
-            <div class="contact-form">
-                <form id="contact-form">
-                    <label for="contact-name">Your Name</label>
-                    <input type="text" id="contact-name" name="contact-name" required>
+  <!-- =================== BOOKING SECTION =================== -->
+  <section id="booking">
+    <h2>Book Your Tickets</h2>
+    <div class="booking-form">
+      <form id="ticket-form">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required>
+        
+        <label for="concert">Select Concert</label>
+        <select id="concert" name="concert" required>
+          <option value="">-- Select Concert --</option>
+          <option value="vancouver">Vancouver - Dec 15, 2025</option>
+          <option value="toronto">Toronto - Dec 20, 2025</option>
+          <option value="montreal">Montreal - Dec 22, 2025</option>
+        </select>
+        
+        <label for="ticket-type">Ticket Type</label>
+        <select id="ticket-type" name="ticket-type" required>
+          <option value="">-- Select Ticket Type --</option>
+          <option value="basic">Basic - $100</option>
+          <option value="fanpit">Fan Pit - $200</option>
+          <option value="vip">VIP - $500</option>
+        </select>
+        
+        <label for="tickets">Number of Tickets</label>
+        <select id="tickets" name="tickets" required>
+          <option value="">-- Select Quantity --</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+        
+        <label for="message">Special Requests</label>
+        <textarea id="message" name="message" rows="4"></textarea>
+        
+        <button type="submit">Reserve Tickets</button>
+      </form>
+      <div id="booking-response" class="response-message"></div>
+    </div>
+  </section>
 
-                    <label for="contact-email">Your Email</label>
-                    <input type="email" id="contact-email" name="contact-email" required>
+  <!-- =================== CONTACT SECTION =================== -->
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <p>For booking inquiries or general questions:</p>
+        <p>Email: info@karanaujlaconcerts.com</p>
+        <p>Phone: +91-9417273251</p>
+        <address>
+          Karan Aujla Concerts<br>
+          123 Music Lane<br>
+          Vancouver, BC V6B 4Y8
+        </address>
+      </div>
+      <div class="contact-form">
+        <form id="contact-form">
+          <label for="contact-name">Your Name</label>
+          <input type="text" id="contact-name" name="contact-name" required>
+          
+          <label for="contact-email">Your Email</label>
+          <input type="email" id="contact-email" name="contact-email" required>
+          
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" required>
+          
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" name="contact-message" rows="5" required></textarea>
+          
+          <button type="submit">Send Message</button>
+        </form>
+        <div id="contact-response" class="response-message"></div>
+      </div>
+    </div>
+  </section>
 
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" required>
+  <!-- =================== FOOTER SECTION =================== -->
+  <footer>
+    <p>&copy; 2025 Karan Aujla Concerts. All Rights Reserved.</p>
+    <p>Website designed by Concert Experience Team</p>
+  </footer>
 
-                    <label for="contact-message">Message</label>
-                    <textarea id="contact-message" name="contact-message" rows="5" required></textarea>
-
-                    <button type="submit">Send Message</button>
-                </form>
-                <div id="contact-response" class="response-message"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- =================== FOOTER SECTION =================== -->
-    <footer>
-        <p>&copy; 2025 Karan Aujla Concerts. All Rights Reserved.</p>
-        <p>Website designed by Concert Experience Team</p>
-    </footer>
-
-    <!-- =================== JAVASCRIPT =================== -->
-    <script>
-        // YouTube video player control for unmute/mute functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const unmuteBtn = document.getElementById('unmute-btn');
-            const player = document.getElementById('player');
-            let isMuted = true;
-
-            unmuteBtn.addEventListener('click', function() {
-                if (isMuted) {
-                    // Change YouTube iframe src to unmute video
-                    player.src = player.src.replace('&mute=1', '&mute=0');
-                    unmuteBtn.innerText = 'Mute Music';
-                    isMuted = false;
-                } else {
-                    // Change YouTube iframe src to mute video
-                    player.src = player.src.replace('&mute=0', '&mute=1');
-                    unmuteBtn.innerText = 'Unmute Music';
-                    isMuted = true;
-                }
-            });
-
-            // Ticket booking form submission
-            const ticketForm = document.getElementById('ticket-form');
-            const bookingResponse = document.getElementById('booking-response');
-
-            if (ticketForm) {
-                ticketForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-
-                    // Get form data
-                    const formData = {
-                        name: document.getElementById('name').value,
-                        email: document.getElementById('email').value,
-                        phone: document.getElementById('phone').value,
-                        concert: document.getElementById('concert').value,
-                        'ticket-type': document.getElementById('ticket-type').value,
-                        tickets: document.getElementById('tickets').value,
-                        message: document.getElementById('message').value
-                    };
-
-                    // Calculate total price
-                    let unitPrice = 0;
-                    switch (formData['ticket-type']) {
-                        case 'basic':
-                            unitPrice = 100;
-                            break;
-                        case 'fanpit':
-                            unitPrice = 200;
-                            break;
-                        case 'vip':
-                            unitPrice = 500;
-                            break;
-                    }
-
-                    const totalPrice = unitPrice * parseInt(formData.tickets);
-                    formData.totalPrice = totalPrice;
-
-                    // Send booking data to server
-                    fetch('/api/bookings', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(formData)
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            bookingResponse.textContent = data.message + ' Your total is $' + totalPrice + '.';
-                            bookingResponse.className = "response-message success";
-                            bookingResponse.style.display = "block";
-                            ticketForm.reset();
-                        })
-                        .catch(error => {
-                            bookingResponse.textContent = "An error occurred. Please try again later.";
-                            bookingResponse.className = "response-message error";
-                            bookingResponse.style.display = "block";
-                            console.error('Error:', error);
-                        });
-                });
-            }
-
-            // Contact form submission
-            const contactForm = document.getElementById('contact-form');
-            const contactResponse = document.getElementById('contact-response');
-
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-
-                    // Get form data
-                    const formData = {
-                        'contact-name': document.getElementById('contact-name').value,
-                        'contact-email': document.getElementById('contact-email').value,
-                        'subject': document.getElementById('subject').value,
-                        'contact-message': document.getElementById('contact-message').value
-                    };
-
-                    // Send contact data to server
-                    fetch('/api/contact', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(formData)
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            contactResponse.textContent = data.message;
-                            contactResponse.className = "response-message success";
-                            contactResponse.style.display = "block";
-                            contactForm.reset();
-                        })
-
-                });
-            });
+  <!-- =================== JAVASCRIPT =================== -->
+  <script>
+    // YouTube video player control for unmute/mute functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const unmuteBtn = document.getElementById('unmute-btn');
+      const player = document.getElementById('player');
+      let isMuted = true;
+      
+      unmuteBtn.addEventListener('click', function() {
+        if (isMuted) {
+          // Change YouTube iframe src to unmute video
+          player.src = player.src.replace('&mute=1', '&mute=0');
+          unmuteBtn.innerText = 'Mute Music';
+          isMuted = false;
+        } else {
+          // Change YouTube iframe src to mute video
+          player.src = player.src.replace('&mute=0', '&mute=1');
+          unmuteBtn.innerText = 'Unmute Music';
+          isMuted = true;
         }
+      });
+      
+      // Ticket booking form submission
+      const ticketForm = document.getElementById('ticket-form');
+      const bookingResponse = document.getElementById('booking-response');
+      
+      if (ticketForm) {
+        ticketForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          // Get form data
+          const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            concert: document.getElementById('concert').value,
+            'ticket-type': document.getElementById('ticket-type').value,
+            tickets: document.getElementById('tickets').value,
+            message: document.getElementById('message').value
+          };
+          
+          // Calculate total price
+          let unitPrice = 0;
+          switch(formData['ticket-type']) {
+            case 'basic':
+              unitPrice = 100;
+              break;
+            case 'fanpit':
+              unitPrice = 200;
+              break;
+            case 'vip':
+              unitPrice = 500;
+              break;
+          }
+          
+          const totalPrice = unitPrice * parseInt(formData.tickets);
+          formData.totalPrice = totalPrice;
+          
+          // Send booking data to server
+          fetch('/api/bookings', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          })
+          .then(response => response.json())
+          .then(data => {
+            bookingResponse.textContent = data.message + ' Your total is $' + totalPrice + '.';
+            bookingResponse.className = "response-message success";
+            bookingResponse.style.display = "block";
+            ticketForm.reset();
+          })
+          .catch(error => {
+            bookingResponse.textContent = "An error occurred. Please try again later.";
+            bookingResponse.className = "response-message error";
+            bookingResponse.style.display = "block";
+            console.error('Error:', error);
+          });
         });
-    </script>
-</body>
+      }
+      
+      // Contact form submission
+      const contactForm = document.getElementById('contact-form');
+      const contactResponse = document.getElementById('contact-response');
+      
+      if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          // Get form data
+          const formData = {
+            'contact-name': document.getElementById('contact-name').value,
+            'contact-email': document.getElementById('contact-email').value,
+            'subject': document.getElementById('subject').value,
+            'contact-message': document.getElementById('contact-message').value
+          };
+          
+          // Send contact data to server
+          fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          })
+          .then(response => response.json())
+          .then(data => {
+            contactResponse.textContent = data.message;
+           bookingResponse.textContent = data.message + ' Your total is $' + totalPrice + '.';
+bookingResponse.style.display = "block";
+bookingResponse.style.color = "#155724";
+bookingResponse.style.backgroundColor = "#d4edda";
+bookingResponse.style.border = "1px solid #c3e6cb";
+bookingResponse.style.padding = "10px";
+bookingResponse.style.marginTop = "10px";
+bookingResponse.style.borderRadius = "5px";
+bookingResponse.style.fontWeight = "bold";
 
+            contactForm.reset();
+          })
+          .catch(error => {
+            contactResponse.textContent = "An error occurred. Please try again later.";
+            contactResponse.className = "response-message error";
+           bookingResponse.style.display = "block";
+bookingResponse.style.color = "#721c24";
+bookingResponse.style.backgroundColor = "#f8d7da";
+bookingResponse.style.border = "1px solid #f5c6cb";
+bookingResponse.style.padding = "10px";
+bookingResponse.style.marginTop = "10px";
+bookingResponse.style.borderRadius = "5px";
+bookingResponse.style.fontWeight = "bold";
+
+            console.error('Error:', error);
+          });
+        });
+      }
+    });
+  </script>
+</body>
 </html>
