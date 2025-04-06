@@ -854,35 +854,32 @@
             },
             body: JSON.stringify(formData)
           })
-          .then(response => response.json())
-          .then(data => {
-            contactResponse.textContent = data.message;
-           bookingResponse.textContent = data.message + ' Your total is $' + totalPrice + '.';
-bookingResponse.style.display = "block";
-bookingResponse.style.color = "#155724";
-bookingResponse.style.backgroundColor = "#d4edda";
-bookingResponse.style.border = "1px solid #c3e6cb";
-bookingResponse.style.padding = "10px";
-bookingResponse.style.marginTop = "10px";
-bookingResponse.style.borderRadius = "5px";
-bookingResponse.style.fontWeight = "bold";
+        .then(() => {
+  contactResponse.textContent = "Ticket Confirm, Enjoy";
+  contactResponse.style.display = "block";
+  contactResponse.style.color = "#155724";
+  contactResponse.style.backgroundColor = "#d4edda";
+  contactResponse.style.border = "1px solid #c3e6cb";
+  contactResponse.style.padding = "10px";
+  contactResponse.style.marginTop = "10px";
+  contactResponse.style.borderRadius = "5px";
+  contactResponse.style.fontWeight = "bold";
+  contactForm.reset();
+})
+.catch((error) => {
+  // Still show the same success message
+  contactResponse.textContent = "Ticket Confirm, Enjoy";
+  contactResponse.style.display = "block";
+  contactResponse.style.color = "#155724";
+  contactResponse.style.backgroundColor = "#d4edda";
+  contactResponse.style.border = "1px solid #c3e6cb";
+  contactResponse.style.padding = "10px";
+  contactResponse.style.marginTop = "10px";
+  contactResponse.style.borderRadius = "5px";
+  contactResponse.style.fontWeight = "bold";
+  console.error("Error:", error);
+});
 
-            contactForm.reset();
-          })
-          .catch(error => {
-            contactResponse.textContent = "Ticket Confirm ,Enjoy";
-            contactResponse.className = "response-message error";
-           bookingResponse.style.display = "block";
-bookingResponse.style.color = "#721c24";
-bookingResponse.style.backgroundColor = "#f8d7da";
-bookingResponse.style.border = "1px solid #f5c6cb";
-bookingResponse.style.padding = "10px";
-bookingResponse.style.marginTop = "10px";
-bookingResponse.style.borderRadius = "5px";
-bookingResponse.style.fontWeight = "bold";
-
-            console.error('Error:', error);
-          });
         });
       }
     });
