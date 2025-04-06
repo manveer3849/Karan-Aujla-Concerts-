@@ -931,16 +931,8 @@
                         .then(response => response.json())
                         .then(data => {
                             contactResponse.textContent = data.message;
-                           bookingResponse.textContent = data.message + ' Your total is $' + totalPrice + '.';
-bookingResponse.style.display = "block";
-bookingResponse.style.color = "#155724";
-bookingResponse.style.backgroundColor = "#d4edda";
-bookingResponse.style.border = "1px solid #c3e6cb";
-bookingResponse.style.padding = "10px";
-bookingResponse.style.marginTop = "10px";
-bookingResponse.style.borderRadius = "5px";
-bookingResponse.style.fontWeight = "bold";
-
+                            contactResponse.className = "response-message success";
+                            contactResponse.style.display = "block";
                             contactForm.reset();
                         })
 
